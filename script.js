@@ -4,7 +4,10 @@ let map1;
 let tileSize = 20;
 let emptyImg;
 let ai;
-let timer = 300;
+let countdown = 300;
+let cd;
+let wall,fence
+let batimg
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -16,6 +19,10 @@ function preload() {
 	player.friction = 0;
 	player.tile = 'p';
 	player.health = 100;
+	player.equipped = 'n'
+
+	batimg = loadImage('bat_wood.png')
+
 	emptyImg = loadImage('Empty.png');
 
 	enemy = new Sprite(62, 24, 30, 30);
@@ -65,6 +72,10 @@ if(player.overlapping(enemy))
 				player.health -=1.5;
 			}
 
+
+			//cycle 2
+
+		
 }
  
 function setup() {
@@ -76,6 +87,41 @@ function setup() {
 	wall.w = 15;
 	wall.h = 15;
 	wall.tile = 'E';
+
+
+
+//cycle 2
+	        weapon  = new Group()
+			weapon.collider = 'n'
+			weapon.type = 'n'
+			bat = new weapon.Group()
+			bat.type = 'b'
+			bat.dmg = 7
+			bat.tile = 'b'
+			bat.img = batimg
+			
+			bat.color = 'red'
+			axe = new weapon.Group()
+			axe.type = 'a'
+			axe.dmg = 8
+			shovel = new weapon.Group()
+			shovel.type = 'sh'
+			shovel.dmg = 9
+			scythe = new weapon.Group()
+			scythe.type = 'sc'
+			scythe.dmg = 10
+
+			player.overlaps(weapon, equip)
+			enemy.overlapping(weapon,attack)
+
+
+
+
+
+	// fence = new wall.Group()
+
+	// fence.tile = 'f'
+	// fence.color = 'pink'
 
 	new Tiles(
 		[
@@ -105,7 +151,7 @@ function setup() {
 "E.EEEE..EEEEE................EE..........E..EEEE.E.E",
 "E.E.......EEE................EE..........EE......E.E",
 "E.E..........................EE..........E.......E.E",
-"E.E..........................EEE.........E.......E.E",
+"E.E...............b..........EEE.........E.......E.E",
 "Ep...........................EEE.................e.E",
 "E............................EEE...........EEE.....E",
 "E.......EEEEEEEEEEEEEEEEE....EEE...........EEE...EEE",
@@ -136,22 +182,23 @@ function setup() {
 		tileSize,
 		tileSize - 1,
 	)
-setInterval(countDown,1000)
+ cd = setInterval(countDown,1000)
 }
 function countDown(){
-	if(timer > 0){
-		timer -= 1;
+	if(countdown){
+		countdown --;
 	}
 	else{
-		clearInterval(countDown)
+		clearInterval(cd)
 	}
 }
 function drawCountdown(){
+	
 	fill(255, 255, 255, 100)
-	rect(width / 2 - 80, height / 2 - 60, 200, 100)
+	rect(width / 2 - 100, 40, 160, 100)
 	textSize(50)
 	fill(255)
-	text(countDown, width / 2, height / 2)
+	text(countdown, width / 2 - 65, 95)
 
 }
  
@@ -160,7 +207,7 @@ function draw() {
     fill(0);
 	background(255,0,0)
 	camera.on()
-	enemy.scale = 0.7;
+	enemy.scale = 0.8;
 	
 
 	//image(map1,0,0,1010,995)
@@ -172,6 +219,7 @@ function draw() {
 //}
 camera.off()
 displayHealth();
+drawCountdown();
 
 	playerControls();
 	enemyControls();
@@ -233,10 +281,10 @@ function playerControls() {
 		player.changeAni("stand");
 	}
 	if (kb.pressing("r")) {
-		player.changeAni(["punch", "stand"]);
+		player.changeAni(["punch" , "stand" ]);
 	}
 	if (kb.pressing("f")) {
-		player.changeAni(["kick", "stand"]);
+		player.changeAni(["kick" ,"stand"]);
 	}
 }
 
@@ -280,4 +328,34 @@ function enemyControls() {
 	}
 }
 
+//cycle 2
 
+function equip(p,w){
+p.equipped = w.type;
+	
+
+switch(w.type){
+
+	case 'b':
+	let weapon = new bat.Sprite(player.x+5 ,player.y+6)
+	let gj = new GlueJoint(player,weapon)
+    break;
+
+}
+
+
+
+
+
+w.remove()
+
+
+
+}
+
+function attack(e,w){
+
+	if(kb.presses('e')){
+		e.health -=w.dmg;
+	}
+}
