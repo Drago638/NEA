@@ -8,6 +8,9 @@ let countdown = 300;
 let cd;
 let wall,fence
 let batimg
+let scytheimg
+let shovelimg
+let axeimg
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -20,8 +23,16 @@ function preload() {
 	player.tile = 'p';
 	player.health = 100;
 	player.equipped = 'n'
+	player.equipped = 'b'
+	player.equipped = 's'
 
 	batimg = loadImage('bat_wood.png')
+
+	scytheimg = loadImage('tile_0129.png')
+
+	shovelimg = loadImage('tile_0128.png')
+
+	axeImg = loadImage('tile_0127.png')
 
 	emptyImg = loadImage('Empty.png');
 
@@ -94,6 +105,8 @@ function setup() {
 	        weapon  = new Group()
 			weapon.collider = 'n'
 			weapon.type = 'n'
+			weapon.hp = 10
+
 			bat = new weapon.Group()
 			bat.type = 'b'
 			bat.dmg = 7
@@ -101,15 +114,24 @@ function setup() {
 			bat.img = batimg
 			
 			bat.color = 'red'
+
 			axe = new weapon.Group()
 			axe.type = 'a'
 			axe.dmg = 8
+			axe.tile = 'a'
+			//axe.img = axeimg
+
 			shovel = new weapon.Group()
 			shovel.type = 'sh'
 			shovel.dmg = 9
+			shovel.tile = 's'
+			shovel.img = shovelimg
+
 			scythe = new weapon.Group()
 			scythe.type = 'sc'
 			scythe.dmg = 10
+			scythe.tile = 'sc'
+			//scythe.img = scytheimg 
 
 			player.overlaps(weapon, equip)
 			enemy.overlapping(weapon,attack)
@@ -144,7 +166,7 @@ function setup() {
 "E.EEE....EEEE......EEEEEEEEE......EE.............E.E",
 "E.EEEE...EEEE.....................EE.............E.E",
 "E.E.E.....EEE......................E..........E..E.E",
-"E.E......EEEE......................EEE........E..E.E",
+"E.E......EEEE.....s................EEE........E..E.E",
 "E.E......EE........................EEE...........E.E",
 "E.E.EE....E..................EE..EEEE...EEEEEEEEEE.E",
 "E.E.......EEE................E...........EEEEEEEEE.E",
@@ -334,7 +356,7 @@ function equip(p,w){
 p.equipped = w.type;
 	
 
-switch(w.type){
+ switch(w.type){
 
 	case 'b':
 	let weapon = new bat.Sprite(player.x+5 ,player.y+6)
@@ -350,12 +372,19 @@ switch(w.type){
 w.remove()
 
 
-
 }
+	
 
 function attack(e,w){
 
 	if(kb.presses('e')){
 		e.health -=w.dmg;
+		if(w.counter<=0)
+		{
+			w.joints.removeAll()
+			w.remove()
+
+		}
+	     
+		}
 	}
-}
