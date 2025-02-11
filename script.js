@@ -289,6 +289,9 @@ function displayHealth() {
 	if (player.health <= 0 ){
 		player.health = 0
 	}
+	if (enemy.health <=0){
+		enemy.health = 0
+	}
 
 
 	
@@ -447,10 +450,7 @@ score += val;
 console.log("score" + score);
 }
 
-	function points () {
-		rect(100, 100, 100, 10);
-	}
-
+	
 function attack(p,w){
 
 	if(kb.presses('e')){
