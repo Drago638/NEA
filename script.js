@@ -12,6 +12,7 @@ let scytheimg
 let shovelimg
 let axeimg
 let score = 0;
+let enemyScore = 0;
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -84,7 +85,19 @@ function offense(){
 			}
 			
 }
-if(player.overlapping(enemy))
+if(enemy.overlapping(player))
+	if(kb.presses("y")){
+
+		if(weapon.type == 'b'){
+			player.health -=5;
+		}
+
+		else{
+		player.health -=1;
+		}
+	}
+
+if(enemy.overlapping(player))
 	if(kb.presses("f")){
 		enemy.health -=1.5;
 	}
@@ -148,7 +161,9 @@ function setup() {
 			scythe.img = scytheimg 
 
 			player.overlaps(weapon, equip)
-			enemy.overlapping(weapon,attack)
+			//enemy.overlaps(weapon,attack)
+			enemy.overlaps(weapon,equip)
+			//player.overlapping(weapon, attack)
 
 
 
@@ -264,10 +279,15 @@ drawCountdown();
 	enemyControls();
 	displayScore()
 	offense()
+	displayEnemyScore();
 
 }
 function displayScore(){
 	text("Score " + score, 100, 160);
+	
+}
+function displayEnemyScore(){
+	text("Score" + enemyScore, 800, 160);
 }
 function displayHealth() {
 	textSize(20);
@@ -386,49 +406,49 @@ function enemymovement(){
 
 function equip(p,w){
 p.equipped = w.type;
-//e.equipped = w.type;
+
 let weapon
 let gj
  switch(w.type){
 
 	case 'b':
-	 weapon = new bat.Sprite(player.x+5 ,player.y+6)
-	 gj = new GlueJoint(player,weapon)
+	 weapon = new bat.Sprite(p.x+5 ,p.y+6)
+	 gj = new GlueJoint(p,weapon)
     break;
 	case 'sh':
-	weapon = new shovel.Sprite(player.x+5 ,player.y+6)
-	 gj = new GlueJoint(player,weapon)
+	weapon = new shovel.Sprite(player.x+5 ,p.y+6)
+	 gj = new GlueJoint(p,weapon)
 	 
     break;
 	case 'sc':
-	 weapon = new scythe.Sprite(player.x+5 ,player.y+6)
-	 gj = new GlueJoint(player,weapon)
+	 weapon = new scythe.Sprite(p.x+5 ,p.y+6)
+	 gj = new GlueJoint(p,weapon)
 	 
     break;
 	case 'a':
-	 weapon = new axe.Sprite(player.x+5 ,player.y+6)
-	 gj = new GlueJoint(player,weapon)
+	 weapon = new axe.Sprite(p.x+5 ,p.y+6)
+	 gj = new GlueJoint(p,weapon)
 	 
     break;
 
-	//case 'b':
-	// weapon = new bat.Sprite(enemy.x+5 ,enemy.y+6)
-	// gj = new GlueJoint(enemy,weapon)
-    //break;
-	//case 'sh':
-	//weapon = new shovel.Sprite(enemy.x+5 ,enemy.y+6)
-	// gj = new GlueJoint(enemy,weapon)
+	//  case 'b':
+	//   weapon = new bat.Sprite(enemy.x+5 ,enemy.y+6)
+	//   gj = new GlueJoint(enemy,weapon)
+    //  break;
+	//  case 'sh':
+	//  weapon = new shovel.Sprite(enemy.x+5 ,enemy.y+6)
+	//   gj = new GlueJoint(enemy,weapon)
 	 
-    //break;
-	//case 'sc':
-	// weapon = new scythe.Sprite(enemy.x+5 ,enemy.y+6)
-	 //gj = new GlueJoint(enemy,weapon)
+    //  break;
+	//  case 'sc':
+	//   weapon = new scythe.Sprite(enemy.x+5 ,enemy.y+6)
+	//   gj = new GlueJoint(enemy,weapon)
 	 
-   // break;
-	//case 'a':
-	// weapon = new axe.Sprite(enemy.x+5 ,enemy.y+6)
-	// gj = new GlueJoint(enemy,weapon)
-	// break;
+    //  break;
+	//  case 'a':
+	//   weapon = new axe.Sprite(enemy.x+5 ,enemy.y+6)
+	//   gj = new GlueJoint(enemy,weapon)
+	//   break;
 
 
 
@@ -448,6 +468,7 @@ w.remove()
 function hit(val){
 score += val;
 console.log("score" + score);
+console.log("score" + enemyScore);
 }
 
 	
