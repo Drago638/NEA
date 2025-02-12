@@ -53,7 +53,8 @@ function preload() {
 	enemy.equipped = 'sh'
 	enemy.equipped = 'a'
 	enemy.equipped = 'sc'
-	
+	enemy.type = 'p2'
+	player.type = 'p1'
  
 	player.addAnis({
 		run: { row: 0, frames: 3, },
@@ -79,11 +80,41 @@ function offense(){
 			if(weapon.type == 'b'){
 				enemy.health -=5;
 			}
+			if(weapon.type == 'a'){
+				enemy.health -=7;
+			}
+			if(weapon.type == 'sh'){
+				enemy.health -=6;
+			}
+			if(weapon.type == 'sc'){
+				enemy.health -=7;
+			}
 
 			else{
 			enemy.health -=1;
 			}
 			
+}
+if(enemy.overlapping(player))
+	if(kb.presses("y")){
+
+		if(weapon.type == 'b'){
+			player.health -=5;
+		}
+		if(weapon.type == 'a'){
+			player.health -=7;
+		}
+		if(weapon.type == 'sh'){
+			player.health -=6;
+		}
+		if(weapon.type == 'sc'){
+			player.health -=7;
+		}
+
+		else{
+		player.health -=1;
+		}
+		
 }
 if(enemy.overlapping(player))
 	if(kb.presses("y")){
@@ -97,10 +128,14 @@ if(enemy.overlapping(player))
 		}
 	}
 
-if(enemy.overlapping(player))
+if(player.overlapping(enemy))
 	if(kb.presses("f")){
 		enemy.health -=1.5;
 	}
+	if(player.overlapping(enemy))
+		if(kb.presses("r")){
+			enemy.health -=1;
+		}
 	if(enemy.overlapping(player))
 		if (kb.presses("y")){
 			player.health -=1;
@@ -133,6 +168,7 @@ function setup() {
 			weapon.collider = 'n'
 			weapon.type = 'n'
 			weapon.hp = 10
+			weapon.equipped = false
 
 			bat = new weapon.Group()
 			bat.type = 'b'
@@ -161,9 +197,9 @@ function setup() {
 			scythe.img = scytheimg 
 
 			player.overlaps(weapon, equip)
-			//enemy.overlaps(weapon,attack)
+			enemy.overlapping(weapon,attack)
 			enemy.overlaps(weapon,equip)
-			//player.overlapping(weapon, attack)
+			player.overlapping(weapon, attack)
 
 
 
@@ -193,19 +229,19 @@ function setup() {
 "..................................................",
 "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
 "E.EEE....EEEE......EEEEEEEEE......EE.............E.E",
-"E.EEEE...EEEE................a....EE.............E.E",
-"E.E.E.....EEE......................E..........E..E.E",
-"E.E......EEEE.....s................EEE........E..E.E",
+"E.EEEE...EEEE.........b...........EE.....a.......E.E",
+"E.E.E..s..EEE......................E..........E..E.E",
+"E.E......EEEE......................EEE........E..E.E",
 "E.E......EE........................EEE...........E.E",
 "E.E.EE....E..................EE..EEEE...EEEEEEEEEE.E",
 "E.E.......EEE................E...........EEEEEEEEE.E",
-"E.EEEE..EEEEE..........c.....EE..........E..EEEE.E.E",
+"E.EEEE..EEEEE................EE..........E..EEEE.E.E",
 "E.E.......EEE................EE..........EE......E.E",
 "E.E..........................EE..........E.......E.E",
-"E.E...............b..........EEE.........E.......E.E",
+"E.E..........................EEE.........E.......E.E",
 "Ep...........................EEE.................e.E",
 "E............................EEE...........EEE.....E",
-"E.......EEEEEEEEEEEEEEEEE....EEE...........EEE...EEE",
+"E.......EEEEEEEEEEEEEEEEE..c.EEE...........EEE...EEE",
 "E.E....EE...............E....EEEEEEEEEEEEEEEEEEEEEEE",
 "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
 "..................................................",
@@ -287,7 +323,7 @@ function displayScore(){
 	
 }
 function displayEnemyScore(){
-	text("Score" + enemyScore, 800, 160);
+	text("Score " + enemyScore, 800, 160);
 }
 function displayHealth() {
 	textSize(20);
@@ -406,7 +442,8 @@ function enemymovement(){
 
 function equip(p,w){
 p.equipped = w.type;
-
+console.log(w.equipped)
+if(!w.equipped && p.joints.length == 0){
 let weapon
 let gj
  switch(w.type){
@@ -414,54 +451,33 @@ let gj
 	case 'b':
 	 weapon = new bat.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
+	 w.equipped = true
+	 weapon.equipped = true
     break;
 	case 'sh':
-	weapon = new shovel.Sprite(player.x+5 ,p.y+6)
+	weapon = new shovel.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
+	 w.equipped = true
+	 weapon.equipped = true
 	 
     break;
 	case 'sc':
 	 weapon = new scythe.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
-	 
+	 w.equipped = true
+	 weapon.equipped = true
     break;
 	case 'a':
 	 weapon = new axe.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
-	 
+	 w.equipped = true
+	 weapon.equipped = true
     break;
-
-	//  case 'b':
-	//   weapon = new bat.Sprite(enemy.x+5 ,enemy.y+6)
-	//   gj = new GlueJoint(enemy,weapon)
-    //  break;
-	//  case 'sh':
-	//  weapon = new shovel.Sprite(enemy.x+5 ,enemy.y+6)
-	//   gj = new GlueJoint(enemy,weapon)
-	 
-    //  break;
-	//  case 'sc':
-	//   weapon = new scythe.Sprite(enemy.x+5 ,enemy.y+6)
-	//   gj = new GlueJoint(enemy,weapon)
-	 
-    //  break;
-	//  case 'a':
-	//   weapon = new axe.Sprite(enemy.x+5 ,enemy.y+6)
-	//   gj = new GlueJoint(enemy,weapon)
-	//   break;
-
-
-
-
-}
-
-
-
-
-
-
+ }
 w.remove()
 
+gj.visible = false;
+}
 
 }
 
@@ -474,17 +490,28 @@ console.log("score" + enemyScore);
 	
 function attack(p,w){
 
-	if(kb.presses('e')){
-		//e.health -=w.dmg;
-		p.health -=w.dmg;
+	if(kb.presses('e') && p.type == 'p1'){
+		enemy.health -=w.dmg;
+		//p.health -=w.dmg;
 		hit(w.dmg *1)
 		if(w.counter<=0)
 		{
 			w.joints.removeAll()
 			w.remove()
-			
-
+		}  
 		}
-	     
+	else if(kb.presses('u') && p.type == 'p2'){
+		player.health -=w.dmg;
+		//p.health -=w.dmg;
+		hit(w.dmg *1)
+		if(w.counter<=0)
+		{
+			w.joints.removeAll()
+			w.remove()
+		}  
 		}
 	}
+	// function spawnCollectibles (){
+	// 	const x = Math.floor(Math.random()* 900);
+	// 	const y = Math
+	// }
