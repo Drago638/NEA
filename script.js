@@ -23,8 +23,8 @@ function preload() {
 	player.anis.frameDelay = 8;
 	player.friction = 0;
 	player.tile = 'p';
-	player.health = 100;
-	player.equipped = 'n'
+	player.health = 100;//healthbar
+	player.equipped = 'n'//equipping weapons
 	player.equipped = 'b'
 	player.equipped = 'sh'
 	player.equipped = 'a'
@@ -41,14 +41,14 @@ function preload() {
 	emptyImg = loadImage('Empty.png');
 
 	enemy = new Sprite(62, 24, 30, 30);
-	enemy.diameter = 30;
+	enemy.diameter = 30;//size of sprite
 	enemy.spriteSheet = 'enemy movements.png';
 	enemy.anis.offset.x = 0;
 	enemy.anis.frameDelay = 8;
 	enemy.friction = 0;
 	enemy.tile = 'e';
-	enemy.health = 100;
-	enemy.equipped = 'n'
+	enemy.health = 100;//healthbar 
+	enemy.equipped = 'n'//equipping weapons
 	enemy.equipped = 'b'
 	enemy.equipped = 'sh'
 	enemy.equipped = 'a'
@@ -56,7 +56,7 @@ function preload() {
 	enemy.type = 'p2'
 	player.type = 'p1'
  
-	player.addAnis({
+	player.addAnis({//sprite animations
 		run: { row: 0, frames: 3, },
 		punch: {row: 1, frames: 2, frameDelay: 20},
 		kick: {row: 2, frames: 2, frameDelay: 20},
@@ -65,7 +65,7 @@ function preload() {
 	});
 	player.changeAni('stand');
 
-	enemy.addAnis({
+	enemy.addAnis({//sprite animations
 		run: { row: 2, frames: 3, },
 		punch: {row: 1, frames: 2, frameDelay: 20},
 		kick: {row: 0, frames: 2, frameDelay: 20},
@@ -74,7 +74,7 @@ function preload() {
 	enemy.changeAni('stand');
 }
 function offense(){
-	if(player.overlapping(enemy))
+	if(player.overlapping(enemy))//How much health it takes off enemy health if weapons used
 		if(kb.presses("r")){
 
 			if(weapon.type == 'b'){
@@ -95,8 +95,8 @@ function offense(){
 			}
 			
 }
-if(enemy.overlapping(player))
-	if(kb.presses("y")){
+if(enemy.overlapping(player))//how much health it takes off player health if weapons used
+	if(kb.presses("u")){
 
 		if(weapon.type == 'b'){
 			player.health -=5;
@@ -116,19 +116,10 @@ if(enemy.overlapping(player))
 		}
 		
 }
-if(enemy.overlapping(player))
-	if(kb.presses("y")){
 
-		if(weapon.type == 'b'){
-			player.health -=5;
-		}
+	
 
-		else{
-		player.health -=1;
-		}
-	}
-
-if(player.overlapping(enemy))
+if(player.overlapping(enemy))//how much health it takes off player and enemy when hit with punch or kick
 	if(kb.presses("f")){
 		enemy.health -=1.5;
 	}
@@ -288,9 +279,7 @@ function drawCountdown(){
 	text(countdown, width / 2 - 65, 95)
 
 }
-function points(){
-	
-}
+
  
 function draw() {
 	clear();
@@ -433,10 +422,6 @@ function enemyControls() {
 		enemy.changeAni(["kick", "stand"]);
 	}
 }
-function enemymovement(){
-
-
-}
 
 //cycle 2
 
@@ -481,19 +466,18 @@ gj.visible = false;
 
 }
 
-function hit(val){
-score += val;
-console.log("score" + score);
-console.log("score" + enemyScore);
-}
+//   function hit(val){
+//   score += val;
+//   console.log("score" + score);
+//   console.log("score" + enemyScore);
+//   }
 
 	
 function attack(p,w){
 
 	if(kb.presses('e') && p.type == 'p1'){
 		enemy.health -=w.dmg;
-		//p.health -=w.dmg;
-		hit(w.dmg *1)
+	score +=w.dmg
 		if(w.counter<=0)
 		{
 			w.joints.removeAll()
@@ -502,8 +486,7 @@ function attack(p,w){
 		}
 	else if(kb.presses('u') && p.type == 'p2'){
 		player.health -=w.dmg;
-		//p.health -=w.dmg;
-		hit(w.dmg *1)
+		enemyScore +=w.dmg
 		if(w.counter<=0)
 		{
 			w.joints.removeAll()
@@ -511,7 +494,3 @@ function attack(p,w){
 		}  
 		}
 	}
-	// function spawnCollectibles (){
-	// 	const x = Math.floor(Math.random()* 900);
-	// 	const y = Math
-	// }
