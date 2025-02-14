@@ -166,6 +166,7 @@ startButton.text = 'Play'
 settingsButton = new Sprite()
 settingsButton.text = 'Settings'
 
+
 backButton = new Sprite()
 backButton.text = 'Back'
 
@@ -344,7 +345,7 @@ function draw() {
 			settingsButton.collider = 'n'
 			settingsButton.visible = true
 			backButton.visible = true
-			startbutton.visible = true
+			startButton.visible = true
 		}
 	}
 	else if(!playing && state == 3){
@@ -372,7 +373,12 @@ function draw() {
 camera.off()
 displayHealth();
 drawCountdown();
-
+ if(player.overlapping(enemy)){
+ 	if(kb.presses('e') ){
+ 		enemy.health -= enemy.dmg;
+ 	    score +=player.dmg 
+ 		}
+ }
 	playerControls();
 	enemyControls();
 	displayScore()
@@ -558,29 +564,15 @@ gj.visible = false;
 function attack(p,e){
 console.log("11111")
 	if(kb.presses('e') ){
-		e.health -=p.dmg;
-	    score +=p.dmg
-		
-		// if(w.counter<=0)
-		// {
-		// 	w.joints.removeAll()
-		// 	w.remove()
-		// }  
+		player.health -= p.dmg;
+	    score +=p.dmg 
 		}
-	
-	}
-		
-function attack2(p,w){
+	}	
+function attack2(p){
 
 		 if(kb.presses('u') ){
-			console.log(p.dmg)
-			player.health -=p.dmg;
+			player.health -= p.dmg;
 			enemyScore +=p.dmg
-			// if(w.counter<=0)
-			// {
-			// 	w.joints.removeAll()
-			// 	w.remove()
-			// }  
 			}
 		}
 	
