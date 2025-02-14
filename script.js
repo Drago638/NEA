@@ -161,7 +161,13 @@ function setup() {
 
 
 startButton = new Sprite()
-startButton.text = 'press 2 start'
+startButton.text = 'Play'
+
+settingsButton = new Sprite()
+settingsButton.text = 'Settings'
+
+backButton = new Sprite()
+backButton.text = 'Back'
 
 	
 	wall = new Group();
@@ -218,6 +224,8 @@ startButton.text = 'press 2 start'
 
 allSprites.visible = false
 startButton.visible  = true
+settingsButton.visible = true
+backButton.visible = true
 
 	// fence = new wall.Group()
 
@@ -307,7 +315,7 @@ function drawCountdown(){
 function draw() {
 	if(!playing && state == 0){
 
-		//draw menu and shgit
+	
 		if (startButton.mouse.pressed()){
 			playing = true
 			state = 1
@@ -316,8 +324,34 @@ function draw() {
 			enemy.visible = true
 			weapon.visible  = true
 			player.visible = true
+			settingsButton.visible = false
+			backButton.visible = false
 
 		}
+		if (settingsButton.mouse.pressed()){
+			playing = false
+			state = 3
+			settingsButton.collider = 'n'
+			settingsButton.visible = false
+			startButton.visible = false
+			backButton.visible = true
+			
+
+		}
+		if (backButton.mouse.pressed()){
+			playing = false
+			state = 4
+			settingsButton.collider = 'n'
+			settingsButton.visible = true
+			backButton.visible = true
+			startbutton.visible = true
+		}
+	}
+	else if(!playing && state == 3){
+		background (255);
+	}
+	else if(!playing && state == 4){
+		background(255)
 	}
 
 	else if(playing && state == 1){
