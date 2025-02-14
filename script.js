@@ -13,6 +13,9 @@ let shovelimg
 let axeimg
 let score = 0;
 let enemyScore = 0;
+
+let playing = false;
+let state = 0
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -54,6 +57,8 @@ function preload() {
 	enemy.equipped = 'a'
 	enemy.equipped = 'sc'
 	enemy.type = 'p2'
+	enemy.dmg = 2
+	player.dmg = 2
 	player.type = 'p1'
  
 	player.addAnis({//sprite animations
@@ -72,50 +77,59 @@ function preload() {
 		stand: { row: 0, frames: 1, },
 	});
 	enemy.changeAni('stand');
+
+	player.collider = 'd'
+enemy.collider = 'd'
+
+
 }
 function offense(){
-	if(player.overlapping(enemy))//How much health it takes off enemy health if weapons used
-		if(kb.presses("r")){
+// 	if(player.overlapping(enemy))//How much health it takes off enemy health if weapons used
+// 		if(kb.presses("e")){
 
-			if(weapon.type == 'b'){
-				enemy.health -=5;
-			}
-			if(weapon.type == 'a'){
-				enemy.health -=7;
-			}
-			if(weapon.type == 'sh'){
-				enemy.health -=6;
-			}
-			if(weapon.type == 'sc'){
-				enemy.health -=7;
-			}
+// 			if(weapon.type == 'b'){
+// 				enemy.health -=5;
+// 				score +=5;
+// 			}
+// 			if(weapon.type == 'a'){
+// 				enemy.health -=7;
+// 				score += 7;
+// 			}
+// 			if(weapon.type == 'sh'){
+// 				enemy.health -=6;
+// 				score += 6;
+// 			}
+// 			if(weapon.type == 'sc'){
+// 				enemy.health -=7;
+// 				score +=7;
+// 			}
 
-			else{
-			enemy.health -=1;
-			}
+// 			else{
+// 			enemy.health -=1;
+// 			}
 			
-}
-if(enemy.overlapping(player))//how much health it takes off player health if weapons used
-	if(kb.presses("u")){
+// }
+// if(enemy.overlapping(player))//how much health it takes off player health if weapons used
+// 	if(kb.presses("u")){
 
-		if(weapon.type == 'b'){
-			player.health -=5;
-		}
-		if(weapon.type == 'a'){
-			player.health -=7;
-		}
-		if(weapon.type == 'sh'){
-			player.health -=6;
-		}
-		if(weapon.type == 'sc'){
-			player.health -=7;
-		}
+// 		if(weapon.type == 'b'){
+// 			player.health -=5;
+// 		}
+// 		if(weapon.type == 'a'){
+// 			player.health -=7;
+// 		}
+// 		if(weapon.type == 'sh'){
+// 			player.health -=6;
+// 		}
+// 		if(weapon.type == 'sc'){
+// 			player.health -=7;
+// 		}
 
-		else{
-		player.health -=1;
-		}
+// 		else{
+// 		player.health -=1;
+// 		}
 		
-}
+// }
 
 	
 
@@ -144,6 +158,11 @@ if(player.overlapping(enemy))//how much health it takes off player and enemy whe
  
 function setup() {
 	createCanvas(1010,995);
+
+
+startButton = new Sprite()
+startButton.text = 'press 2 start'
+
 	
 	wall = new Group();
 	wall.image = emptyImg
@@ -187,14 +206,18 @@ function setup() {
 			scythe.tile = 'c'
 			scythe.img = scytheimg 
 
+
+			player.layer =2
+			enemy.layer = 2
 			player.overlaps(weapon, equip)
-			enemy.overlapping(weapon,attack)
+			
 			enemy.overlaps(weapon,equip)
-			player.overlapping(weapon, attack)
+            player.colliding(enemy, attack)
 
+             enemy.overlapping(player,attack2)
 
-
-
+allSprites.visible = false
+startButton.visible  = true
 
 	// fence = new wall.Group()
 
@@ -282,6 +305,22 @@ function drawCountdown(){
 
  
 function draw() {
+	if(!playing && state == 0){
+
+		//draw menu and shgit
+		if (startButton.mouse.pressed()){
+			playing = true
+			state = 1
+			startButton.collider = 'n'
+			startButton.visible = false
+			enemy.visible = true
+			weapon.visible  = true
+			player.visible = true
+
+		}
+	}
+
+	else if(playing && state == 1){
 	clear();
     fill(0);
 	background(255,0,0)
@@ -305,6 +344,7 @@ drawCountdown();
 	displayScore()
 	offense()
 	displayEnemyScore();
+	}
 
 }
 function displayScore(){
@@ -438,12 +478,14 @@ let gj
 	 gj = new GlueJoint(p,weapon)
 	 w.equipped = true
 	 weapon.equipped = true
+	 p.dmg = weapon.dmg
     break;
 	case 'sh':
 	weapon = new shovel.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
 	 w.equipped = true
 	 weapon.equipped = true
+	 p.dmg = weapon.dmg
 	 
     break;
 	case 'sc':
@@ -451,13 +493,19 @@ let gj
 	 gj = new GlueJoint(p,weapon)
 	 w.equipped = true
 	 weapon.equipped = true
+	 p.dmg = weapon.dmg
     break;
 	case 'a':
 	 weapon = new axe.Sprite(p.x+5 ,p.y+6)
 	 gj = new GlueJoint(p,weapon)
 	 w.equipped = true
 	 weapon.equipped = true
+	 p.dmg = weapon.dmg
     break;
+default:
+	p.dmg =1.2
+
+	
  }
 w.remove()
 
@@ -473,24 +521,32 @@ gj.visible = false;
 //   }
 
 	
-function attack(p,w){
-
-	if(kb.presses('e') && p.type == 'p1'){
-		enemy.health -=w.dmg;
-	score +=w.dmg
-		if(w.counter<=0)
-		{
-			w.joints.removeAll()
-			w.remove()
-		}  
+function attack(p,e){
+console.log("11111")
+	if(kb.presses('e') ){
+		e.health -=p.dmg;
+	    score +=p.dmg
+		
+		// if(w.counter<=0)
+		// {
+		// 	w.joints.removeAll()
+		// 	w.remove()
+		// }  
 		}
-	else if(kb.presses('u') && p.type == 'p2'){
-		player.health -=w.dmg;
-		enemyScore +=w.dmg
-		if(w.counter<=0)
-		{
-			w.joints.removeAll()
-			w.remove()
-		}  
-		}
+	
 	}
+		
+function attack2(p,w){
+
+		 if(kb.presses('u') ){
+			console.log(p.dmg)
+			player.health -=p.dmg;
+			enemyScore +=p.dmg
+			// if(w.counter<=0)
+			// {
+			// 	w.joints.removeAll()
+			// 	w.remove()
+			// }  
+			}
+		}
+	
