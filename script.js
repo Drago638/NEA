@@ -13,7 +13,7 @@ let shovelimg
 let axeimg
 let score = 0;
 let enemyScore = 0;
-
+let aiButton
 let playing = false;
 let state = 0
  
@@ -160,17 +160,19 @@ function setup() {
 	createCanvas(1010,995);
 
 
-startButton = new Sprite()
+startButton = new Sprite(150,50)
 startButton.text = 'Play'
 
-settingsButton = new Sprite()
+settingsButton = new Sprite(150,100)
 settingsButton.text = 'Settings'
 
 
-backButton = new Sprite()
+backButton = new Sprite(150,150)
 backButton.text = 'Back'
 
-	
+aiButton = new Sprite(150,200)
+
+aiButton.text = '1p'
 	wall = new Group();
 	wall.image = emptyImg
 	wall.collider = 's';
@@ -227,6 +229,7 @@ allSprites.visible = false
 startButton.visible  = true
 settingsButton.visible = true
 backButton.visible = true
+aiButton.visible = true
 
 	// fence = new wall.Group()
 
@@ -312,50 +315,77 @@ function drawCountdown(){
 
 }
 
- 
+ function menuControls(){
+	if (startButton.mouse.pressed()){
+	playing = true
+	state = 1
+	startButton.collider = 'n'
+	startButton.visible = false
+	enemy.visible = true
+	weapon.visible  = true
+	player.visible = true
+	settingsButton.visible = false
+	backButton.visible = false
+
+}
+if (settingsButton.mouse.pressed()){
+	playing = false
+	state = 3
+	settingsButton.collider = 's'
+	settingsButton.visible = false
+	startButton.collider = 'n'
+	startButton.visible = false
+	backButton.collider = 's'
+	backButton.visible = true
+	
+
+}
+if (backButton.mouse.pressed()){
+	playing = false
+	state = 4
+	
+	settingsButton.visible = true
+	backButton.collider = 's'
+	backButton.visible = true
+	startButton.collider = 's'
+	startButton.visible = true
+	aiButton.visible = false
+	aiButton.collider = 'n'
+}
+if(aiButton.mouse.pressed()){
+	state = 5
+	playing = true
+
+	startButton.collider = 'n'
+	startButton.visible = false
+	enemy.visible = true
+	weapon.visible  = true
+	player.visible = true
+	settingsButton.visible = false
+	backButton.visible = false
+}
+ }
 function draw() {
 	if(!playing && state == 0){
+		menuControls()
+		
 
-	
-		if (startButton.mouse.pressed()){
-			playing = true
-			state = 1
-			startButton.collider = 'n'
-			startButton.visible = false
-			enemy.visible = true
-			weapon.visible  = true
-			player.visible = true
-			settingsButton.visible = false
-			backButton.visible = false
-
-		}
-		if (settingsButton.mouse.pressed()){
-			playing = false
-			state = 3
-			settingsButton.collider = 'n'
-			settingsButton.visible = false
-			startButton.visible = false
-			backButton.visible = true
-			
-
-		}
-		if (backButton.mouse.pressed()){
-			playing = false
-			state = 4
-			settingsButton.collider = 'n'
-			settingsButton.visible = true
-			backButton.visible = true
-			startButton.visible = true
-		}
 	}
 	else if(!playing && state == 3){
 		background (255);
+		menuControls
+	
 	}
 	else if(!playing && state == 4){
 		background(255)
+		menuControls()
+
 	}
 
 	else if(playing && state == 1){
+		background(255)
+		menuControls()
+	
 	clear();
     fill(0);
 	background(255,0,0)
@@ -381,6 +411,41 @@ drawCountdown();
  }
 	playerControls();
 	enemyControls();
+	displayScore()
+	offense()
+	displayEnemyScore();
+	}
+
+	else if(playing && state == 5){
+		background(255)
+	
+	
+	clear();
+    fill(0);
+	background(255,0,0)
+	camera.on()
+	enemy.scale = 0.8;
+	
+
+	//image(map1,0,0,1010,995)
+	image(map1,0,0,1010,995)
+//camera.x = player.x + 0
+//camera.y = player.y 
+
+//if(player.health >0){
+//}
+camera.off()
+displayHealth();
+drawCountdown();
+ if(player.overlapping(enemy)){
+ 	if(kb.presses('e') ){
+ 		enemy.health -= enemy.dmg;
+ 	    score +=player.dmg 
+ 		}
+ }
+	playerControls();
+	//enemyControls();
+	enemy.moveTowards(player,0.01)
 	displayScore()
 	offense()
 	displayEnemyScore();
@@ -542,8 +607,9 @@ let gj
 	 weapon.equipped = true
 	 p.dmg = weapon.dmg
     break;
+
 default:
-	p.dmg =1.2
+	 p.dmg =1.2
 
 	
  }
