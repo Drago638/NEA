@@ -171,8 +171,8 @@ backButton = new Sprite(150,150)
 backButton.text = 'Back'
 
 aiButton = new Sprite(150,200)
-
 aiButton.text = '1p'
+
 	wall = new Group();
 	wall.image = emptyImg
 	wall.collider = 's';
@@ -265,7 +265,7 @@ aiButton.visible = true
 "E.E.......EEE................EE..........EE......E.E",
 "E.E..........................EE..........E.......E.E",
 "E.E..........................EEE.........E.......E.E",
-"Ep...........................EEE.................e.E",
+"Ep...........................EEE.............e.....E",
 "E............................EEE...........EEE.....E",
 "E.......EEEEEEEEEEEEEEEEE..c.EEE...........EEE...EEE",
 "E.E....EE...............E....EEEEEEEEEEEEEEEEEEEEEEE",
@@ -326,6 +326,7 @@ function drawCountdown(){
 	player.visible = true
 	settingsButton.visible = false
 	backButton.visible = false
+	aiButton.visible = false
 
 }
 if (settingsButton.mouse.pressed()){
@@ -337,6 +338,7 @@ if (settingsButton.mouse.pressed()){
 	startButton.visible = false
 	backButton.collider = 's'
 	backButton.visible = true
+	aiButton.visible = false
 	
 
 }
@@ -344,6 +346,7 @@ if (backButton.mouse.pressed()){
 	playing = false
 	state = 4
 	
+	//settingButton.collider = 's'
 	settingsButton.visible = true
 	backButton.collider = 's'
 	backButton.visible = true
@@ -356,6 +359,7 @@ if(aiButton.mouse.pressed()){
 	state = 5
 	playing = true
 
+	aiButton.visible = false
 	startButton.collider = 'n'
 	startButton.visible = false
 	enemy.visible = true
@@ -365,6 +369,13 @@ if(aiButton.mouse.pressed()){
 	backButton.visible = false
 }
  }
+//  function WinLose(){
+// 	if (player.health == 0()){
+// 		text("You Lose" + player.health,100,85 )
+
+// 	}
+// 	}
+ 
 function draw() {
 	if(!playing && state == 0){
 		menuControls()
@@ -374,17 +385,50 @@ function draw() {
 	else if(!playing && state == 3){
 		background (255);
 		menuControls
+		// settingsButton.collider = 's'
+		// settingsButton.visible = false
+		// startButton.collider = 'n'
+		// startButton.visible = false
+		// backButton.collider = 's'
+		// backButton.visible = true
+		// aiButton.visible = false
 	
 	}
 	else if(!playing && state == 4){
 		background(255)
 		menuControls()
+		// settingsButton.visible = true
+		// backButton.collider = 's'
+		// backButton.visible = true
+		// startButton.collider = 's'
+		// startButton.visible = true
+		// aiButton.visible = false
+		// aiButton.collider = 'n'
 
 	}
-
+	else if(!playing && state == 5){
+		background(255)
+		menuControls()
+		// aiButton.visible = false
+		// startButton.collider = 'n'
+		// startButton.visible = false
+		// enemy.visible = true
+		// weapon.visible  = true
+		// player.visible = true
+		// settingsButton.visible = false
+		// backButton.visible = false
+	}
 	else if(playing && state == 1){
 		background(255)
 		menuControls()
+		// startButton.collider = 'n'
+		// startButton.visible = false
+		// enemy.visible = true
+		// weapon.visible  = true
+		// player.visible = true
+		// settingsButton.visible = false
+		// backButton.visible = false
+		// aiButton.visible = false
 	
 	clear();
     fill(0);
