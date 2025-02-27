@@ -16,6 +16,7 @@ let enemyScore = 0;
 let aiButton
 let playing = false;
 let state = 0
+let menuImg
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -41,7 +42,9 @@ function preload() {
 
 	axeimg = loadImage('axe tile.png')
 
-	emptyImg = loadImage('Empty.png');
+	emptyImg = loadImage('Empty.png')
+	
+	menuImg = loadImage('menu photo.png')
 
 	enemy = new Sprite(62, 24, 30, 30);
 	enemy.diameter = 30;//size of sprite
@@ -316,6 +319,7 @@ function drawCountdown(){
 }
 
  function menuControls(){
+	background(menuImg)
 	if (startButton.mouse.pressed()){
 	playing = true
 	state = 1
@@ -345,7 +349,6 @@ if (settingsButton.mouse.pressed()){
 if (backButton.mouse.pressed()){
 	playing = false
 	state = 4
-	
 	//settingButton.collider = 's'
 	settingsButton.visible = true
 	backButton.collider = 's'
@@ -377,58 +380,62 @@ if(aiButton.mouse.pressed()){
 // 	}
  
 function draw() {
-	if(!playing && state == 0){
+	if(!playing){
+		menuControls()
+		background(menuImg)
+		
+	}
+	 if(!playing && state == 3){
+		//background (menuImg);
 		menuControls()
 		
-
-	}
-	else if(!playing && state == 3){
-		background (255);
-		menuControls
-		// settingsButton.collider = 's'
-		// settingsButton.visible = false
-		// startButton.collider = 'n'
-		// startButton.visible = false
-		// backButton.collider = 's'
-		// backButton.visible = true
-		// aiButton.visible = false
+		settingsButton.collider = 's'
+		settingsButton.visible = false
+		startButton.collider = 'n'
+		startButton.visible = false
+		backButton.collider = 's'
+		backButton.visible = true
+		aiButton.visible = false
 	
 	}
-	else if(!playing && state == 4){
-		background(255)
+	 if(!playing && state == 4){
+		//background(menuImg)
 		menuControls()
-		// settingsButton.visible = true
-		// backButton.collider = 's'
-		// backButton.visible = true
-		// startButton.collider = 's'
-		// startButton.visible = true
-		// aiButton.visible = false
-		// aiButton.collider = 'n'
+		
+		settingsButton.visible = true
+		backButton.collider = 's'
+		backButton.visible = false
+		startButton.collider = 's'
+		startButton.visible = true
+		aiButton.visible = true
+		aiButton.collider = 's'
 
 	}
 	else if(!playing && state == 5){
-		background(255)
+		//background(menuImg)
 		menuControls()
-		// aiButton.visible = false
-		// startButton.collider = 'n'
-		// startButton.visible = false
-		// enemy.visible = true
-		// weapon.visible  = true
-		// player.visible = true
-		// settingsButton.visible = false
-		// backButton.visible = false
+		
+		aiButton.visible = false
+		startButton.collider = 'n'
+		startButton.visible = false
+		enemy.visible = true
+		weapon.visible  = true
+		player.visible = true
+		settingsButton.visible = false
+		backButton.visible = false
 	}
 	else if(playing && state == 1){
-		background(255)
+		//background(menuImg)
 		menuControls()
-		// startButton.collider = 'n'
-		// startButton.visible = false
-		// enemy.visible = true
-		// weapon.visible  = true
-		// player.visible = true
-		// settingsButton.visible = false
-		// backButton.visible = false
-		// aiButton.visible = false
+		
+		startButton.collider = 'n'
+		startButton.visible = false
+		enemy.visible = true
+		weapon.visible  = true
+		player.visible = true
+		settingsButton.visible = false
+		backButton.visible = false
+		aiButton.visible = false
 	
 	clear();
     fill(0);
@@ -480,6 +487,7 @@ drawCountdown();
 //}
 camera.off()
 displayHealth();
+//enemy.moveTowards(player,0.005)
 drawCountdown();
  if(player.overlapping(enemy)){
  	if(kb.presses('e') ){
@@ -489,10 +497,17 @@ drawCountdown();
  }
 	playerControls();
 	//enemyControls();
-	enemy.moveTowards(player,0.01)
+	
 	displayScore()
+	AI();
 	offense()
 	displayEnemyScore();
+	}
+	function AI(){
+		enemy.moveTowards(player,0.012)
+		enemy.ani = 'run'
+		enemy.direction = enemy.angleTo(player)
+
 	}
 
 }
