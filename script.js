@@ -163,18 +163,18 @@ function setup() {
 	createCanvas(1010,995);
 
 
-startButton = new Sprite(150,50)
-startButton.text = 'Play'
+startButton = new Sprite(150,500)
+startButton.text = 'PvP'
 
-settingsButton = new Sprite(150,100)
+settingsButton = new Sprite(900,50)
 settingsButton.text = 'Settings'
 
 
-backButton = new Sprite(150,150)
+backButton = new Sprite(900,700)
 backButton.text = 'Back'
 
-aiButton = new Sprite(150,200)
-aiButton.text = '1p'
+aiButton = new Sprite(300,500)
+aiButton.text = 'PvE'
 
 	wall = new Group();
 	wall.image = emptyImg
@@ -386,7 +386,6 @@ function draw() {
 		
 	}
 	 if(!playing && state == 3){
-		//background (menuImg);
 		menuControls()
 		
 		settingsButton.collider = 's'
