@@ -35,7 +35,7 @@ function preload() {
 	player.equipped = 'a'
 	player.equipped = 'sc'
 
-	batimg = loadImage('bat_wood.png')
+	batimg = loadImage('bat_wood.png')// displays the images of the game
 
 	scytheimg = loadImage('scythe tile.png')
 
@@ -163,22 +163,34 @@ if(player.overlapping(enemy))//how much health it takes off player and enemy whe
 function setup() {
 	createCanvas(1010,995);
 
+buttonClass= new Group()
 
-startButton = new Sprite(150,500)
+
+buttonClass.color = 'orange'
+buttonClass.stroke = 'black'
+buttonClass.strokeWeight = '3'
+buttonClass.textSize = 30
+buttonClass.w = 115
+startButton = new buttonClass.Sprite(150,700)// displays each button made
 startButton.text = 'PvP'
 
-settingsButton = new Sprite(900,50)
+settingsButton = new buttonClass.Sprite(900,50)
 settingsButton.text = 'Settings'
 
 
-backButton = new Sprite(900,700)
+
+
+backButton = new buttonClass.Sprite(900,700)
 backButton.text = 'Back'
 
-aiButton = new Sprite(300,500)
+
+aiButton = new buttonClass.Sprite(300,700)
 aiButton.text = 'PvE'
 
-keysButton = new Sprite(200, 200)
+
+keysButton = new buttonClass.Sprite(200, 200)
 keysButton.text = 'Keys'
+
 
 	wall = new Group();
 	wall.image = emptyImg
@@ -188,9 +200,12 @@ keysButton.text = 'Keys'
 	wall.tile = 'E';
 
 
+	wall.isWall = true;
+
+
 
 //cycle 2
-	        weapon  = new Group()
+	        weapon  = new Group()// shows how much damage each weapon deals 
 			weapon.collider = 'n'
 			weapon.type = 'n'
 			weapon.hp = 10
@@ -247,7 +262,7 @@ keysButton.visible = false
 	// fence.tile = 'f'
 	// fence.color = 'pink'
 
-	new Tiles(
+	new Tiles(// tile map
 		[
 			"....................................................",
 "..................................................",
@@ -316,7 +331,7 @@ function countDown(){
 		clearInterval(cd)
 	}
 }
-function drawCountdown(){
+function drawCountdown(){// displays the working countdown
 	
 	fill(255, 255, 255, 150)
 	rect(width / 2 - 100, 30, 160, 100)
@@ -328,7 +343,7 @@ function drawCountdown(){
 
  function menuControls(){
 	background(menuImg)
-	if (startButton.mouse.pressed()){
+	if (startButton.mouse.pressed()){// start button can appear and shows what otehr buttons will be present
 	playing = true
 	state = 1
 	startButton.collider = 'n'
@@ -344,7 +359,7 @@ function drawCountdown(){
 
 
 }
-if (settingsButton.mouse.pressed()){
+if (settingsButton.mouse.pressed()){// settings button can appear and shows what otehr buttons will be present
 	playing = false
 	state = 3
 	settingsButton.collider = 'n'
@@ -360,7 +375,7 @@ if (settingsButton.mouse.pressed()){
 	
 
 }
-if(keysButton.mouse.pressed()){
+if(keysButton.mouse.pressed()){// keys button can appear and shows what otehr buttons will be present
 	playing = false
 	state = 6
 	settingsButton.collider = 'n'
@@ -374,8 +389,9 @@ if(keysButton.mouse.pressed()){
 	aiButton.collider = 'n'
 	keysButton.visible = false
 	keysButton.collider = 'n'
+	
 }
-if (backButton.mouse.pressed()){
+if (backButton.mouse.pressed()){// back button can appear and shows what otehr buttons will be present
 	playing = false
 	state = 4
 	//settingButton.collider = 's'
@@ -389,11 +405,11 @@ if (backButton.mouse.pressed()){
 	keysButton.visible = 'false'
 	keysButton.collider = 's'
 }
-if(aiButton.mouse.pressed()){
+if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr buttons will be present
 	state = 5
 	playing = true
 
-	aiButton.visible = true// makes button visible can push it
+	aiButton.visible = false
 	startButton.collider = 'n'
 	startButton.visible = false
 	enemy.visible = true
@@ -492,7 +508,7 @@ function draw() {
 
 //if(player.health >0){
 //}
-camera.off()
+camera.off()// the camera size if i want it zoomed in or not
 displayHealth();
 drawCountdown();
  if(player.overlapping(enemy)){
@@ -544,22 +560,44 @@ drawCountdown();
 	offense()
 	displayEnemyScore();
 	}
-	function AI(){
-		enemy.moveTowards(player,0.012)
-		enemy.ani = 'run'
-		enemy.direction = enemy.angleTo(player)
+	
+
+}
+function AI(){// AI goes towards the player
+	let seen = false
+
+		 sprites = world.rayCastAll(player, enemy, (sprite) => sprite.isWall);
+	 	 for (let sprite of sprites) {
+			line(player.x, player.y, sprite.x, sprite.y);
+			sprite.moveTowards(player,0.005)
+			if(sprite.type == 'p2')
+			seen = true
+			//console.log(sprite.ani)
+		}
+	if(seen){
+		enemy.ani = 'run';
+	}
+	else{
+		enemy.ani = 'stand';
+		enemy.vel.x = 0
+		enemy.vel.y = 0
+		}
+		console.log(seen)
+
+		
 
 	}
 
-}
-function displayScore(){
+
+
+function displayScore(){// shows the score
 	text("Score " + score, 100, 160);
 	
 }
-function displayEnemyScore(){
+function displayEnemyScore(){// shows the score
 	text("Score " + enemyScore, 800, 160);
 }
-function displayHealth() {
+function displayHealth() {// shwos the working healthbar
 	textSize(20);
 	fill(255);
 	text("Health", 100, 85);
@@ -588,7 +626,7 @@ function displayHealth() {
 
 }
 
-function playerControls() {
+function playerControls() {// movement of the player and punch and kick
 	if (kb.pressing("a")) {
 		player.x -= 1.5;
 		player.mirror.x = true;
@@ -628,7 +666,7 @@ function playerControls() {
 	}
 }
 
-function enemyControls() {
+function enemyControls() {// enemy movement and punc hand kick
 	if (kb.pressing("j")) {
 		enemy.x -= 1.5;
 		enemy.mirror.x = true;
@@ -670,7 +708,7 @@ function enemyControls() {
 
 //cycle 2
 
-function equip(p,w){
+function equip(p,w){// can equip weapons and deal damage with them
 p.equipped = w.type;
 console.log(w.equipped)
 if(!w.equipped && p.joints.length == 0){
@@ -727,7 +765,7 @@ gj.visible = false;
 //   }
 
 	
-function attack(p,e){
+function attack(p,e){// allows damage to be dealt with weapons and the amount of damage goes to the score count up
 console.log("11111")
 	if(kb.presses('e') ){
 		player.health -= p.dmg;
