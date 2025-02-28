@@ -17,6 +17,7 @@ let aiButton
 let playing = false;
 let state = 0
 let menuImg
+let keysButton
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -176,6 +177,9 @@ backButton.text = 'Back'
 aiButton = new Sprite(300,500)
 aiButton.text = 'PvE'
 
+keysButton = new Sprite(200, 200)
+keysButton.text = 'Keys'
+
 	wall = new Group();
 	wall.image = emptyImg
 	wall.collider = 's';
@@ -227,12 +231,16 @@ aiButton.text = 'PvE'
             player.colliding(enemy, attack)
 
              enemy.overlapping(player,attack2)
+			//  player.overlapping(menuControls)
+			//  enemy.overlapping(menuControls)
 
 allSprites.visible = false
 startButton.visible  = true
 settingsButton.visible = true
-backButton.visible = true
+backButton.visible = false
 aiButton.visible = true
+keysButton.visible = false
+
 
 	// fence = new wall.Group()
 
@@ -331,38 +339,61 @@ function drawCountdown(){
 	settingsButton.visible = false
 	backButton.visible = false
 	aiButton.visible = false
+	keysButton.visible = false
+	keysButton.collider = 'n'
+
 
 }
 if (settingsButton.mouse.pressed()){
 	playing = false
 	state = 3
-	settingsButton.collider = 's'
+	settingsButton.collider = 'n'
 	settingsButton.visible = false
 	startButton.collider = 'n'
 	startButton.visible = false
-	backButton.collider = 's'
+	backButton.collider = 'n'
 	backButton.visible = true
 	aiButton.visible = false
+	keysButton.visible = true
+	keysButton.collider = 's'
+
 	
 
+}
+if(keysButton.mouse.pressed()){
+	playing = false
+	state = 6
+	settingsButton.collider = 'n'
+	settingsButton.visible = true
+	startButton.collider = 'n'
+	startButton.visible = false
+	backButton.collider = 'n'
+	backButton.visible = true
+	backButton.collider = 'n'
+	aiButton.visible = false
+	aiButton.collider = 'n'
+	keysButton.visible = false
+	keysButton.collider = 'n'
 }
 if (backButton.mouse.pressed()){
 	playing = false
 	state = 4
 	//settingButton.collider = 's'
 	settingsButton.visible = true
-	backButton.collider = 's'
+	backButton.collider = 'n'
 	backButton.visible = true
-	startButton.collider = 's'
+	startButton.collider = 'n'
 	startButton.visible = true
-	aiButton.visible = false
+	aiButton.visible = true
 	aiButton.collider = 'n'
+	keysButton.visible = 'false'
+	keysButton.collider = 's'
 }
 if(aiButton.mouse.pressed()){
 	state = 5
 	playing = true
 
-	aiButton.visible = false
+	aiButton.visible = true// makes button visible can push it
 	startButton.collider = 'n'
 	startButton.visible = false
 	enemy.visible = true
@@ -370,6 +401,8 @@ if(aiButton.mouse.pressed()){
 	player.visible = true
 	settingsButton.visible = false
 	backButton.visible = false
+	keysButton.visible = false
+	keysButton.collider = 'n'
 }
  }
 //  function WinLose(){
@@ -385,17 +418,20 @@ function draw() {
 		background(menuImg)
 		
 	}
-	 if(!playing && state == 3){
+	if(!playing && state == 6){
+		//background(menuImg)
 		menuControls()
 		
-		settingsButton.collider = 's'
 		settingsButton.visible = false
-		startButton.collider = 'n'
-		startButton.visible = false
 		backButton.collider = 's'
 		backButton.visible = true
+		startButton.collider = 'n'
+		startButton.visible = false
 		aiButton.visible = false
-	
+		aiButton.collider = 's'
+		keysButton.visible = false
+		keysButton.collider = 's'
+
 	}
 	 if(!playing && state == 4){
 		//background(menuImg)
@@ -408,6 +444,9 @@ function draw() {
 		startButton.visible = true
 		aiButton.visible = true
 		aiButton.collider = 's'
+		keysButton.visible = false
+		keysButton.collider = 's'
+
 
 	}
 	else if(!playing && state == 5){
@@ -415,19 +454,21 @@ function draw() {
 		menuControls()
 		
 		aiButton.visible = false
-		startButton.collider = 'n'
+		startButton.collider = 's'
 		startButton.visible = false
 		enemy.visible = true
 		weapon.visible  = true
 		player.visible = true
 		settingsButton.visible = false
 		backButton.visible = false
+		keysButton.visible = false
+		
 	}
 	else if(playing && state == 1){
 		//background(menuImg)
 		menuControls()
 		
-		startButton.collider = 'n'
+		startButton.collider = 's'
 		startButton.visible = false
 		enemy.visible = true
 		weapon.visible  = true
@@ -435,6 +476,7 @@ function draw() {
 		settingsButton.visible = false
 		backButton.visible = false
 		aiButton.visible = false
+		keysButton.visible = false
 	
 	clear();
     fill(0);
