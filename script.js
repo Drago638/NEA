@@ -18,6 +18,7 @@ let playing = false;
 let state = 0
 let menuImg
 let keysButton
+let loseImg;
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -37,6 +38,10 @@ function preload() {
 
 	batimg = loadImage('bat_wood.png')// displays the images of the game
 
+	playercontrolsImg = loadImage('playercontrols.png')
+
+	enemycontrolsImg = loadImage ('enemycontrols.png')
+
 	scytheimg = loadImage('scythe tile.png')
 
 	shovelimg = loadImage('shovel tile.png')
@@ -46,6 +51,11 @@ function preload() {
 	emptyImg = loadImage('Empty.png')
 	
 	menuImg = loadImage('menu photo.png')
+
+	loseImg = loadImage('loseImg.png')
+
+	winImg = loadImage('winImg.jpg')
+
 
 	enemy = new Sprite(62, 24, 30, 30);
 	enemy.diameter = 30;//size of sprite
@@ -210,42 +220,47 @@ keysButton.text = 'Keys'
 			weapon.type = 'n'
 			weapon.hp = 10
 			weapon.equipped = false
+			weapon.layer = 3
 
 			bat = new weapon.Group()
 			bat.type = 'b'
 			bat.dmg = 5
 			bat.tile = 'b'
 			bat.img = batimg
-			
 			bat.color = 'red'
+			bat.layer = 3
 
 			axe = new weapon.Group()
 			axe.type = 'a'
 			axe.dmg = 7
 			axe.tile = 'a'
 			axe.img = axeimg
+			axe.layer = 3
 
 			shovel = new weapon.Group()
 			shovel.type = 'sh'
 			shovel.dmg = 6
 			shovel.tile = 's'
 			shovel.img = shovelimg
+			shovel.layer = 3
 
 			scythe = new weapon.Group()
 			scythe.type = 'sc'
 			scythe.dmg = 7
 			scythe.tile = 'c'
 			scythe.img = scytheimg 
+			scythe.layer = 3
 
 
 			player.layer =2
 			enemy.layer = 2
-			player.overlaps(weapon, equip)
 			
+			
+			player.overlaps(weapon, equip)
 			enemy.overlaps(weapon,equip)
             player.colliding(enemy, attack)
-
              enemy.overlapping(player,attack2)
+	
 			//  player.overlapping(menuControls)
 			//  enemy.overlapping(menuControls)
 
@@ -389,6 +404,9 @@ if(keysButton.mouse.pressed()){// keys button can appear and shows what otehr bu
 	aiButton.collider = 'n'
 	keysButton.visible = false
 	keysButton.collider = 'n'
+
+	image(playercontrolsImg,50,50,150,150)
+	image(enemycontrolsImg,250,50 , 170, 150)
 	
 }
 if (backButton.mouse.pressed()){// back button can appear and shows what otehr buttons will be present
@@ -421,12 +439,25 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 	keysButton.collider = 'n'
 }
  }
-//  function WinLose(){
-// 	if (player.health == 0()){
-// 		text("You Lose" + player.health,100,85 )
+ function WinLose(){
+	if (player.health <= 0){
+		// text("You Lose" + player.health,100,85 )
+		camera.off()
+		noStroke()
+		//rect(1010, 995,player.x -440, player.y -350, 1010,995)
+		image(loseImg, 0, 0, 1010,995)
+		allSprites.visible = false
 
-// 	}
-// 	}
+	}
+	if (enemy.health <= 0 ){
+		camera.off()
+		noStroke()
+		//rect(1010, 955,player.x -440, player.y -350, 1010,995)
+		image(winImg, 0, 0, 1010,995)
+		allSprites.visible = false
+	}
+	
+	}
  
 function draw() {
 	if(!playing){
@@ -447,6 +478,8 @@ function draw() {
 		aiButton.collider = 's'
 		keysButton.visible = false
 		keysButton.collider = 's'
+		image(playercontrolsImg,50,50,170,150)
+		image(enemycontrolsImg,250, 50, 170, 150)
 
 	}
 	 if(!playing && state == 4){
@@ -522,6 +555,7 @@ drawCountdown();
 	displayScore()
 	offense()
 	displayEnemyScore();
+	WinLose();
 	}
 
 	else if(playing && state == 5){
