@@ -19,6 +19,12 @@ let state = 0
 let menuImg
 let keysButton
 let loseImg;
+let player1KickImg;
+let player1PunchImg;
+let player1WeaponImg;
+let player2KickImg;
+let player2PunchImg;
+let player2WeaponImg;
  
 function preload() {
 	map1 = loadImage('top down map 1.png')
@@ -55,6 +61,18 @@ function preload() {
 	loseImg = loadImage('loseImg.png')
 
 	winImg = loadImage('winImg.jpg')
+
+	player1PunchImg = loadImage('Player 1 punch key.png')
+
+	player1KickImg = loadImage('player 1 kick key.png')
+
+	player1WeaponImg = loadImage('player 1 weapon key.png')
+
+	player2PunchImg = loadImage('player 2 punch key.png')
+
+	player2KickImg = loadImage('player 2 kick key.png')
+
+	player2WeaponImg = loadImage('player 2 weapon key.png')
 
 
 	enemy = new Sprite(62, 24, 30, 30);
@@ -405,8 +423,6 @@ if(keysButton.mouse.pressed()){// keys button can appear and shows what otehr bu
 	keysButton.visible = false
 	keysButton.collider = 'n'
 
-	image(playercontrolsImg,50,50,150,150)
-	image(enemycontrolsImg,250,50 , 170, 150)
 	
 }
 if (backButton.mouse.pressed()){// back button can appear and shows what otehr buttons will be present
@@ -445,9 +461,11 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		camera.off()
 		noStroke()
 		//rect(1010, 995,player.x -440, player.y -350, 1010,995)
-		image(loseImg, 0, 0, 1010,995)
+		image(loseImg,0, 0, 1010,995)
 		allSprites.visible = false
 		backButton.visible = true
+		
+		
 
 	}
 	if (enemy.health <= 0 ){
@@ -457,7 +475,9 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		image(winImg, 0, 0, 1010,995)
 		allSprites.visible = false
 		backButton.visible = true
+	
 	}
+	
 	
 	}
  
@@ -482,6 +502,12 @@ function draw() {
 		keysButton.collider = 's'
 		image(playercontrolsImg,50,50,170,150)
 		image(enemycontrolsImg,250, 50, 170, 150)
+		image(player1PunchImg,50,300,50,50)
+		image(player1KickImg, 100,300,50,50)
+		image(player1WeaponImg,150,300,50,50)
+		image(player2PunchImg,250,300,50,50)
+		image(player2KickImg,300,300,50,50)
+		image(player2WeaponImg,350,300,50,50)
 
 	}
 	 if(!playing && state == 4){
