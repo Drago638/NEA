@@ -447,6 +447,7 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		//rect(1010, 995,player.x -440, player.y -350, 1010,995)
 		image(loseImg, 0, 0, 1010,995)
 		allSprites.visible = false
+		backButton.visible = true
 
 	}
 	if (enemy.health <= 0 ){
@@ -455,6 +456,7 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		//rect(1010, 955,player.x -440, player.y -350, 1010,995)
 		image(winImg, 0, 0, 1010,995)
 		allSprites.visible = false
+		backButton.visible = true
 	}
 	
 	}
@@ -599,6 +601,7 @@ drawCountdown();
 }
 function AI(){// AI goes towards the player
 	let seen = false
+	WinLose()
 
 		 sprites = world.rayCastAll(player, enemy, (sprite) => sprite.isWall);
 	 	 for (let sprite of sprites) {
