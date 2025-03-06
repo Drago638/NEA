@@ -479,11 +479,41 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		backButton.visible = true
 	
 	}
+	if (countdown <= 0){
+		if (score > enemyScore){
+			camera.off()
+		noStroke()
+		//rect(1010, 955,player.x -440, player.y -350, 1010,995)
+		image(winImg, 0, 0, 1010,995)
+		allSprites.visible = false
+		backButton.visible = true
+		
+
+
+		}
+
+	}
+	if (countdown <= 0){
+		if (enemyScore > score){
+			camera.off()
+		noStroke()
+		//rect(1010, 955,player.x -440, player.y -350, 1010,995)
+		image(loseImg, 0, 0, 1010,995)
+		allSprites.visible = false
+		backButton.visible = true
+		
+
+
+		}
+	}
 
 	if(backButton.mouse.pressed()){
 		enemy.health = 100
 		player.health = 100
+		countdown = 300
+		countdown -=1
 		score = 0
+		enemyScore = 0
 		player.x = 50
 		player.y = 550
 		enemy.x = 855
@@ -647,7 +677,7 @@ function AI(){// AI goes towards the player
 		 sprites = world.rayCastAll(player, enemy, (sprite) => sprite.isWall);
 	 	 for (let sprite of sprites) {
 			line(player.x, player.y, sprite.x, sprite.y);
-			sprite.moveTowards(player,0.005)
+			sprite.moveTowards(player,0.008)
 			if(sprite.type == 'p2')
 			seen = true
 			//console.log(sprite.ani)
@@ -662,7 +692,24 @@ function AI(){// AI goes towards the player
 		}
 		console.log(seen)
 
-		
+		if(backButton.mouse.pressed()){
+			enemy.health = 100
+			player.health = 100
+			countdown = 300
+			countdown -= 1
+			score = 0
+			player.x = 50
+			player.y = 550
+			enemy.x = 855
+			enemy.y = 525
+			enemy.w.equipped = remove
+			player.w.equipped = remove
+			state = 1
+			allSprites.visible = false
+			backButton.visible = true
+			
+	
+		}
 
 	}
 
@@ -675,7 +722,7 @@ function displayScore(){// shows the score
 function displayEnemyScore(){// shows the score
 	text("Score " + enemyScore, 800, 160);
 }
-function displayHealth() {// shwos the working healthbar
+function displayHealth() {// shows the working healthbar
 	textSize(20);
 	fill(255);
 	text("Health", 100, 85);
@@ -704,7 +751,7 @@ function displayHealth() {// shwos the working healthbar
 
 }
 
-function playerControls() {// movement of the player and punch and kick
+function playerControls() {// movement of the player and punch and kick, goes back to stand position after every movement
 	if (kb.pressing("a")) {
 		player.x -= 1.5;
 		player.mirror.x = true;
@@ -744,7 +791,7 @@ function playerControls() {// movement of the player and punch and kick
 	}
 }
 
-function enemyControls() {// enemy movement and punc hand kick
+function enemyControls() {// enemy movement and punch hand kick, goes back to stand after every movement
 	if (kb.pressing("j")) {
 		enemy.x -= 1.5;
 		enemy.mirror.x = true;
@@ -786,7 +833,7 @@ function enemyControls() {// enemy movement and punc hand kick
 
 //cycle 2
 
-function equip(p,w){// can equip weapons and deal damage with them
+function equip(p,w){// can equip weapons and deal damage with them, allows for weapons to stick to the players sprites
 p.equipped = w.type;
 console.log(w.equipped)
 if(!w.equipped && p.joints.length == 0){
