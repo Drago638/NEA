@@ -464,6 +464,8 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		image(loseImg,0, 0, 1010,995)
 		allSprites.visible = false
 		backButton.visible = true
+	
+
 		
 		
 
@@ -477,7 +479,20 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 		backButton.visible = true
 	
 	}
-	
+
+	if(backButton.mouse.pressed()){
+		enemy.health = 100
+		player.health = 100
+		score = 0
+		player.x = 50
+		player.y = 550
+		enemy.x = 855
+		enemy.y = 525
+		enemy.w.equipped = remove
+		player.w.equipped = remove
+		//state = 1
+
+	}
 	
 	}
  
