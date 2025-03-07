@@ -166,20 +166,21 @@ function offense(){
 	
 
 if(player.overlapping(enemy))//how much health it takes off player and enemy when hit with punch or kick
+console.log (player.dmg)
 	if(kb.presses("f")){
-		enemy.health -=1.5;
+		enemy.health -=player.dmg;
 	}
 	if(player.overlapping(enemy))
 		if(kb.presses("r")){
-			enemy.health -=1;
+			enemy.health -=player.dmg;
 		}
 	if(enemy.overlapping(player))
 		if (kb.presses("y")){
-			player.health -=1;
+			player.health -=player.dmg;
 		}
 		if(enemy.overlapping(player))
 			if (kb.presses("h")){
-				player.health -=1.5;
+				player.health -=player.dmg;
 			}
 
 
@@ -619,7 +620,7 @@ displayHealth();
 drawCountdown();
  if(player.overlapping(enemy)){
  	if(kb.presses('e') ){
- 		enemy.health -= enemy.dmg;
+ 		enemy.health -= player.dmg;
  	    score +=player.dmg 
  		}
  }
@@ -680,7 +681,13 @@ function AI(){// AI goes towards the player
 			sprite.moveTowards(player,0.008)
 			if(sprite.type == 'p2')
 			seen = true
-			//console.log(sprite.ani)
+		
+			
+		}
+		if (enemy.overlapping(player)){
+			player.health -= 0.3;
+
+
 		}
 	if(seen){
 		enemy.ani = 'run';
@@ -693,6 +700,8 @@ function AI(){// AI goes towards the player
 		console.log(seen)
 
 		if(backButton.mouse.pressed()){
+			playing = false
+			state == 0
 			enemy.health = 100
 			player.health = 100
 			countdown = 300
@@ -835,7 +844,7 @@ function enemyControls() {// enemy movement and punch hand kick, goes back to st
 
 function equip(p,w){// can equip weapons and deal damage with them, allows for weapons to stick to the players sprites
 p.equipped = w.type;
-console.log(w.equipped)
+//console.log(w.equipped)
 if(!w.equipped && p.joints.length == 0){
 let weapon
 let gj
