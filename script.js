@@ -26,7 +26,7 @@ let player2KickImg;
 let player2PunchImg;
 let player2WeaponImg;
  
-function preload() {
+function preload() {// allows all variables and attrributes of the player to be displayed and working also the sprite of the player
 	map1 = loadImage('top down map 1.png')
 	player = new Sprite(62, 24, 30, 30);
 	player.diameter = 30;
@@ -75,7 +75,7 @@ function preload() {
 	player2WeaponImg = loadImage('player 2 weapon key.png')
 
 
-	enemy = new Sprite(62, 24, 30, 30);
+	enemy = new Sprite(62, 24, 30, 30);// allows for all attributes and values to be displayed and working for the enemy and sprite of the enemy
 	enemy.diameter = 30;//size of sprite
 	enemy.spriteSheet = 'enemy movements.png';
 	enemy.anis.offset.x = 0;
@@ -93,7 +93,7 @@ function preload() {
 	player.dmg = 2
 	player.type = 'p1'
  
-	player.addAnis({//sprite animations
+	player.addAnis({//player sprite animations
 		run: { row: 0, frames: 3, },
 		punch: {row: 1, frames: 2, frameDelay: 20},
 		kick: {row: 2, frames: 2, frameDelay: 20},
@@ -102,7 +102,7 @@ function preload() {
 	});
 	player.changeAni('stand');
 
-	enemy.addAnis({//sprite animations
+	enemy.addAnis({//enemy sprite animations
 		run: { row: 2, frames: 3, },
 		punch: {row: 1, frames: 2, frameDelay: 20},
 		kick: {row: 0, frames: 2, frameDelay: 20},
@@ -190,9 +190,9 @@ console.log (player.dmg)
 }
  
 function setup() {
-	createCanvas(1010,995);
+	createCanvas(1010,995);// size of the canvas on which the game is displayed
 
-buttonClass= new Group()
+buttonClass= new Group()// allows for the buttons to have the design and text of it and all of the buttons inherit the same design from the button class
 
 
 buttonClass.color = 'orange'
@@ -221,7 +221,7 @@ keysButton = new buttonClass.Sprite(200, 200)
 keysButton.text = 'Keys'
 
 
-	wall = new Group();
+	wall = new Group();// allows for the wall tiles to be there but not seen so that players cant go through the walls
 	wall.image = emptyImg
 	wall.collider = 's';
 	wall.w = 15;
@@ -296,7 +296,7 @@ keysButton.visible = false
 	// fence.tile = 'f'
 	// fence.color = 'pink'
 
-	new Tiles(// tile map
+	new Tiles(// tile map for the walls and the player and weapon spawn
 		[
 			"....................................................",
 "..................................................",
@@ -355,7 +355,7 @@ keysButton.visible = false
 		tileSize,
 		tileSize - 1,
 	)
- cd = setInterval(countDown,1000)
+ cd = setInterval(countDown,1000)// displays a working countdown
 }
 function countDown(){
 	if(countdown){
@@ -456,7 +456,7 @@ if(aiButton.mouse.pressed()){// ai button can appear and shows what otehr button
 	keysButton.collider = 'n'
 }
  }
- function WinLose(){
+ function WinLose(){// allows for win and lose page to be displayed when needed
 	if (player.health <= 0){
 		// text("You Lose" + player.health,100,85 )
 		camera.off()
@@ -533,7 +533,7 @@ function draw() {
 		background(menuImg)
 		
 	}
-	if(!playing && state == 6){
+	if(!playing && state == 6){// shows what buttons should be visible in each state
 		//background(menuImg)
 		menuControls()
 		
@@ -554,9 +554,10 @@ function draw() {
 		image(player2PunchImg,250,300,50,50)
 		image(player2KickImg,300,300,50,50)
 		image(player2WeaponImg,350,300,50,50)
+	
 
 	}
-	 if(!playing && state == 4){
+	 if(!playing && state == 4){// shows what buttons should be visible in each state
 		//background(menuImg)
 		menuControls()
 		
@@ -569,10 +570,11 @@ function draw() {
 		aiButton.collider = 's'
 		keysButton.visible = false
 		keysButton.collider = 's'
+	
 
 
 	}
-	else if(!playing && state == 5){
+	else if(!playing && state == 5){// shows what buttons should be visible in each state
 		//background(menuImg)
 		menuControls()
 		
@@ -587,7 +589,7 @@ function draw() {
 		keysButton.visible = false
 		
 	}
-	else if(playing && state == 1){
+	else if(playing && state == 1){// shows what buttons should be visible in each state
 		//background(menuImg)
 		menuControls()
 		
@@ -671,17 +673,17 @@ drawCountdown();
 	
 
 }
-function AI(){// AI goes towards the player
+function AI(){// AI goes towards the player and attacking
 	let seen = false
 	WinLose()
 
 		 sprites = world.rayCastAll(player, enemy, (sprite) => sprite.isWall);
 	 	 for (let sprite of sprites) {
-			line(player.x, player.y, sprite.x, sprite.y);
+			//line(player.x, player.y, sprite.x, sprite.y);
 			sprite.moveTowards(player,0.008)
 			if(sprite.type == 'p2')
 			seen = true
-		
+		    
 			
 		}
 		if (enemy.overlapping(player)){
@@ -697,7 +699,7 @@ function AI(){// AI goes towards the player
 		enemy.vel.x = 0
 		enemy.vel.y = 0
 		}
-		console.log(seen)
+		//console.log(seen)
 
 		if(backButton.mouse.pressed()){
 			playing = false
@@ -716,6 +718,7 @@ function AI(){// AI goes towards the player
 			state = 1
 			allSprites.visible = false
 			backButton.visible = true
+			enemyScore.visible = false
 			
 	
 		}
